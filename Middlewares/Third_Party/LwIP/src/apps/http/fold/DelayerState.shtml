@@ -1,0 +1,13 @@
+<table style="width:100%;" hidden>
+	<tr>
+		<th rowspan="1"><label id="delayercurIdx_disp"><!--#delayercurIdx--></label></th>
+		<th rowspan="1"><label id="delayercurLoop_disp"><!--#delayercurLoop--></label></th>
+		<th rowspan="1"><label id="delayercurState_disp"><!--#delayercurState--></label></th>
+
+		<th rowspan="1"><label id="delayerStart_disp"><!--#delayerStart--></label></th>
+		<th rowspan="1"><label id="delayerCount_disp"><!--#delayerCount--></label></th>
+		<th rowspan="1"><label id="delayerCycle_disp"><!--#delayerCycle--></label></th>
+		<th rowspan="1"><label id="delayerEndState_disp"><!--#delayerEndState--></label></th>
+		<th rowspan="1"><label id="delayeronoff_disp"><!--#delayeronoff--></label></th>
+	</tr>
+</table>

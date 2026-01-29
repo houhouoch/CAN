@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title><!--#aboutModel--> DC Power Supply</title>
+<link rel="shortcut icon" href="/UNIT/favicon.ico">
+<link rel="stylesheet" type="text/css" href="./main.css">
+<script type="text/javascript" src="./main.js"></script>
+</head>
+
+<body>
+<div id="top" style="min-height: 70px;padding: 8px 16px;overflow: hidden;">
+	<div class="container" style="display: flex;align-items: center;height: 100%;">
+		<img alt="Logo" src="./UNIT/logo.png" style="max-width: 50%;max-height: calc(100% - 2px);width: auto;height: auto; margin-right: 16px;"/>
+		<div id="topTxtCont">
+			<div class="font24" style="font-size: 24px; margin: 0;">
+				<!--#aboutModel--> Programable DC Power Supply
+			</div>
+			<div class="font14" style="font-size: 14px; margin: 0; margin-top: 4px;">
+				Serial number:<!--#aboutSerialNum-->
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="nav">
+  	<div class="container">
+		<div id="navCont" class="navItemCont">
+			<a class="navItem" href="/#home">Home</a>
+			<!-- <a class="navItem" href="/#panel">Panel</a> -->
+			<a class="navItem" href="/#command">Command</a>
+			<a class="navItem" href="/#settings">Settings</a>
+			<!-- <a class="navItem" href="/#power">Power</a> -->
+			<!-- <a class="navItem" href="/#list">List</a> -->
+			<!-- <a class="navItem" href="/#delayer">Delayer</a> -->
+		</div>
+		<div class="loginCont">
+			<img id="userhead" alt='userhead' src='./user.png'/>
+			<a id="loginout" href="javascript:void(0);" onclick="ClickLogInOut();"></a>
+		</div>
+  	</div>
+</div>
+
+<style>
+	iframe {
+		position: fixed;
+		width: 100%;
+		height: 100%;
+		margin: auto;
+		border: none;
+	}
+</style>
+<iframe id="main_frame" style="width:device-width;height: device-height;"></iframe>
+
+<div id="main" class="container">
+	<div class="desTitle">Loading...</div>
+	<noscript>This page requires Javascript. Please enable it and refresh this page.</noscript>
+</div>
+
+
+
+<script type="text/javascript">
+	init();
+	load();
+</script>
+</body>
+
+</html>

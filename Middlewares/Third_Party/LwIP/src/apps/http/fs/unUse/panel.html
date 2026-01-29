@@ -1,0 +1,100 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+<div id="main" class="container">
+    <div id="panelCont">
+        <div id="HomeLed" class="panelSub"></div>
+        <div id="MenuLed" class="panelSub"></div>
+        <div id="WaveLed" class="panelSub"></div>
+        <div id="LockLed" class="panelSub"></div>
+        <div id="Ch1Led" class="panelSub"></div>
+        <div id="Ch2Led" class="panelSub"></div>
+        <div id="Ch3Led" class="panelSub"></div>
+        <div id="Ch4Led" class="panelSub"></div>
+        <div id="Ch1OnOffLed" class="panelSub"></div>
+        <div id="Ch2OnOffLed" class="panelSub"></div>
+        <div id="Ch3OnOffLed" class="panelSub"></div>
+        <div id="Ch4OnOffLed" class="panelSub"></div>
+        <div id="Ch1CcCvLed" class="panelSub"></div>
+        <div id="Ch2CcCvLed" class="panelSub"></div>
+        <div id="Ch3CcCvLed" class="panelSub"></div>
+        <div id="Ch4CcCvLed" class="panelSub"></div>
+        <img id="panel" class="panelSub" alt="panel" usemap="#keymap">
+        <img id="lcd"   class="panelSub" alt="LCD" draggable="false"
+             src="data:image/gif;base64,R0lGODlhAQABAHAAACH5BAEAAAEALAAAAAABAAEAgQAAAAAAAAAAAAAAAAICTAEAOw==">
+        <map id="keymap" name="keymap">
+            <area shape="rect" coords="75,333,115,358"  alt="F1">
+            <area shape="rect" coords="130,333,170,358" alt="F2">
+            <area shape="rect" coords="185,333,225,358" alt="F3">
+            <area shape="rect" coords="241,333,284,358" alt="F4">
+            <area shape="rect" coords="297,333,337,358" alt="F5">
+            <area shape="rect" coords="352,333,395,358" alt="F6">
+            <area shape="rect" coords="462,75,512,102" alt="Home">
+            <area shape="rect" coords="537,75,588,102" alt="Menu">
+            <area shape="rect" coords="612,75,662,102" alt="Wave">
+            <area shape="rect" coords="686,75,737,102" alt="Lock">
+            <area shape="rect" coords="455,277,480,313" alt="Ch1">
+            <area shape="rect" coords="508,277,533,313" alt="Ch2">
+            <area shape="rect" coords="560,277,586,313" alt="Ch3">
+            <area shape="rect" coords="612,277,638,313" alt="Ch4">
+            <area shape="rect" coords="455,324,480,361" alt="OnOffCh1">
+            <area shape="rect" coords="508,324,533,361" alt="OnOffCh2">
+            <area shape="rect" coords="560,324,586,361" alt="OnOffCh3">
+            <area shape="rect" coords="612,324,638,361" alt="OnOffCh4">
+            <area shape="rect" coords="686,276,737,305" alt="OnOffAll">
+            <area shape="rect" coords="450,200,485,223" alt="Dig1">
+            <area shape="rect" coords="503,200,540,223" alt="Dig2">
+            <area shape="rect" coords="556,200,592,223" alt="Dig3">
+            <area shape="rect" coords="450,161,485,185" alt="Dig4">
+            <area shape="rect" coords="503,161,540,185" alt="Dig5">
+            <area shape="rect" coords="556,161,592,185" alt="Dig6">
+            <area shape="rect" coords="450,123,485,148" alt="Dig7">
+            <area shape="rect" coords="503,123,540,148" alt="Dig8">
+            <area shape="rect" coords="556,123,592,148" alt="Dig9">
+            <area shape="rect" coords="450,236,485,260" alt="Dot">
+            <area shape="rect" coords="503,236,540,260" alt="Dig0">
+            <area shape="rect" coords="556,236,592,260" alt="Esc">
+            <area shape="rect" coords="635,228,670,253" alt="Left">
+            <area shape="rect" coords="694,228,730,253" alt="Right">
+            <area shape="circle" coords="682,170,21"    alt="Ok">
+            <area shape="poly" coords="727,142,737,171,728,200,717,193,724,171,717,149" alt="Up">
+            <area shape="poly" coords="635,142,645,149,638,169,646,193,635,200,626,171" alt="Down">
+            <area shape="default" alt="Panel" class="norCursor">
+        </map>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var areas = getByTagName(getById("keymap"), "area");
+    for(var n = 0; n < areas.length; n++) {
+        let key = areas[n].alt;
+        areas[n].href = "javascript:void(0);";
+        areas[n].onmousedown = function(){ KeyDown(this); };
+        areas[n].onmouseup = function(){ KeyUp(this); };
+        areas[n].onmouseleave = function(){ KeyLeave(this); };
+        areas[n].ontouchstart = function(){ KeyTouchStr(this); };
+        areas[n].ontouchend = function(){ KeyTouchEnd(this); };
+        areas[n].oncontextmenu = function(){ event.returnValue = false;};
+    }
+    var LcdImg = getById("lcd");
+    LcdImg.onmousedown = function(){ LcdMouseDown(this); };
+    LcdImg.onmouseup = function(){ LcdMouseUp(this); };
+    LcdImg.onmousemove = function(){ LcdMouseMove(this); };
+    LcdImg.onmouseleave = function(){ LcdMouseUp(this); };
+    LcdImg.ontouchstart = function(){ LcdTouchStr(this); };
+    LcdImg.ontouchend = function(){ LcdTouchEnd(this); };
+    LcdImg.ontouchmove = function(){ LcdTouchMove(this); };
+    LcdImg.oncontextmenu = function(){ event.returnValue = false;};
+    getById("panel").onload = function(){ StartPanel(); };
+    getById("panel").src="/panel.png";
+</script>
+</body>
+
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="./main.css">
+    <script type="text/javascript" src="./main.js"></script>
+</head>
+
+<body>
+    <div id="main" ; class="container">
+        <div class="desTitle">Log In</div>
+        <div>Modifications to the device requires you to log in.</div>
+        <br>
+        <label for="pwInput">Password:</label>
+        <br>
+        <form>
+            <label for="userName" hidden = "true">Current password</label>
+            <input id="userName" type="text" autocomplete="username" value="admin" hidden="true">
+            <input id="pwInput" type="password" maxlength="8" autocomplete="current-password" onkeypress="KeyLogin(event)">
+        </form>
+        <br>
+        <button type="button" class="btn" onclick="SubmitLogin()">Log in</button>
+    </div>
+    <script type="text/javascript">
+        if(TsetSess()) {
+            getById("pwInput").focus();
+        }else {
+            addLoading("Modifications to the device requires cookie and login, please enable the cookie and login first.");
+        }
+    </script>
+</body>
+
+</html>

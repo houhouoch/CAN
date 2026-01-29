@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>DelayerPage</title>
+	<meta charset=utf-8 />
+	<!-- <link type="text/css" rel="styleSheet"  href="Style.css" /> -->
+	<script src="main.js"></script>
+	<style>
+		:root {
+			--industrial-blue: #0062cc;        /* 稍深的蓝色 */
+			--hmi-green: #218838;             /* 柔和的绿色 */
+			--warning-red: #c82333;           /* 降低饱和度的红色 */
+			--panel-bg: #f0f2f5;              /* 浅灰蓝背景 */
+			--container-bg: #e9ecef;          /* 中灰色容器背景 */
+			--border-color: #ced4da;          /* 标准灰色边框 */
+			--text-primary: #2d3436;          /* 深灰色文字 */
+			--table-row-padding: 12px 15px;
+			--table-line-height: 1.5;
+		}
+		
+		body {
+			background-color: var(--panel-bg);
+			color: var(--text-primary);
+			font-family: 'Segoe UI', system-ui;
+			padding: 20px;
+		}
+		
+		.container {
+			display: grid;
+			grid-template-columns: 300px 1fr;
+			gap: 20px;
+			max-width: 1200px;
+			margin: 0 auto;
+		}
+		
+		/* 通用表格样式 */
+		.table-container {
+			background: #ffffff;
+			border: 1px solid var(--border-color);
+			border-radius: 8px;
+			box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+			overflow: hidden;
+		}
+		
+		/* 参数表格 */
+		#delayerParamTable {
+			width: 100%;
+			border-collapse: collapse;
+		}
+		
+		#delayerParamTable th,
+		#delayerParamTable td {
+			padding: var(--table-row-padding);
+			line-height: var(--table-line-height);
+			font-size: 14px;
+			height: 48px;
+			vertical-align: middle;
+			border-bottom: 1px solid var(--border-color);
+		}
+		
+		#delayerParamTable th {
+			background: var(--industrial-blue);
+			color: white;
+			font-weight: 500;
+		}
+		
+		#delayerParamTable td {
+			background: #ffffff;
+			color: var(--text-primary);
+		}
+		
+		/* 主列表表格 */
+		#delayerTable {
+			width: 100%;
+			border-collapse: collapse;
+			background: #ffffff;
+		}
+		
+		#delayerTable th,
+		#delayerTable td {
+			padding: var(--table-row-padding);
+			line-height: var(--table-line-height);
+			font-size: 14px;
+			height: 48px;
+			vertical-align: middle;
+			border-bottom: 1px solid var(--border-color);
+		}
+		
+		#delayerTable th {
+			background: var(--industrial-blue);
+			color: white;
+			font-weight: 500;
+		}
+		
+		#delayerTable td {
+			background: #f8f9fa;
+			color: var(--text-primary);
+		}
+		
+		#delayerTable tr:hover td {
+			background: #e9ecef;
+		}
+		
+		/* 输入控件 */
+		input[type="number"], 
+		select {
+			width: 120px;
+			height: 36px;
+			padding: 8px;
+			background: #ffffff;
+			border: 1px solid var(--border-color);
+			color: var(--industrial-blue);
+			border-radius: 4px;
+			box-sizing: border-box;
+			vertical-align: middle;
+			transition: all 0.3s;
+		}
+		
+		input[type="number"]:focus, 
+		select:focus {
+			border-color: var(--industrial-blue);
+			box-shadow: 0 0 0 3px rgba(0,98,204,0.25);
+			outline: none;
+		}
+		
+		/* 按钮样式 */
+		.dark-button {
+			height: 36px;
+			padding: 8px 16px;
+			background: var(--industrial-blue);
+			border: 1px solid #004b9c;
+			color: white;
+			border-radius: 4px;
+			cursor: pointer;
+			transition: all 0.3s;
+			box-sizing: border-box;
+			vertical-align: middle;
+		}
+		
+		.dark-button:hover {
+			background: #0056b3;
+			transform: translateY(-1px);
+		}
+		
+		/* 开关控件 */
+		.switch {
+			position: relative;
+			display: inline-block;
+			width: 60px;
+			height: 34px;
+			vertical-align: middle;
+		}
+		
+		.switch input {
+			opacity: 0;
+			width: 0;
+			height: 0;
+		}
+		
+		.switch-slider {
+			position: absolute;
+			cursor: pointer;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-color: #adb5bd;
+			transition: .4s;
+			border-radius: 34px;
+		}
+		
+		.switch-slider:before {
+			position: absolute;
+			content: "";
+			height: 26px;
+			width: 26px;
+			left: 4px;
+			bottom: 4px;
+			background-color: white;
+			transition: .4s;
+			border-radius: 50%;
+		}
+		
+		input:checked + .switch-slider {
+			background-color: var(--hmi-green);
+		}
+		
+		input:checked + .switch-slider:before {
+			transform: translateX(26px);
+		}
+		
+		/* 响应式布局 */
+		@media (max-width: 768px) {
+			.container {
+				grid-template-columns: 1fr;
+				padding: 15px;
+			}
+		
+			:root {
+				--table-row-padding: 10px 12px;
+				--table-line-height: 1.3;
+			}
+		
+			#delayerParamTable th,
+			#delayerParamTable td,
+			#delayerTable th,
+			#delayerTable td {
+				height: 42px;
+				font-size: 13px;
+			}
+		
+			input[type="number"],
+			select,
+			.dark-button {
+				height: 32px;
+				width: 100%;
+			}
+		
+			.switch {
+				width: 50px;
+				height: 28px;
+			}
+		
+			.switch-slider:before {
+				height: 20px;
+				width: 20px;
+			}
+		}
+		</style>
+</head>
+
+
+<body style="display: none;">
+	<form id="delayerSet_form" method="POST" action="/delayerout.cgi"></form>
+	<div style="display: flex;width: 80%;">
+		<div id = "delayerParamTable_div" style="background-color: none;">
+			<table id = "delayerParamTable">
+				<tr>
+					<th><!--#lb_Delayer_curState--></th><td><label class=""  id="delayercurState"><!--#delayercurState--></label></td>
+				</tr><tr>
+					<th><!--#lb_Delayer_curIdx--></th><td><label class=""  id="delayercurIdx"><!--#delayercurIdx--></label></td>
+				</tr><tr>
+					<th><!--#lb_Delayer_curLoop--></th><td><label class=""  id="delayercurLoop"><!--#delayercurLoop--></label></td>
+				</tr><tr>
+					<th><!--#lb_Delayer_Start--></th><td><input class="" type="number" form="delayerSet_form" id="delayerStart"	name="delayerStart"></td>
+				</tr><tr>
+					<th><!--#lb_Delayer_Count--></th><td><input class="" type="number" form="delayerSet_form" id="delayerCount"	name="delayerCount"></td>
+				</tr><tr>
+					<th><!--#lb_Delayer_Cycle--></th><td><input class="" type="number" form="delayerSet_form" id="delayerCycle"	name="delayerCycle"></td>
+				</tr><tr>
+					<th><!--#lb_Delayer_endState--></th>
+					<td><select class="" form="delayerSet_form" id="delayerEndState" name="delayerEndState">
+							<option value= 'ON' >ON</option>
+							<option value= 'OFF'> OFF</option>
+						</select>
+					</td>
+				</tr><tr>
+					<td><input class="dark-button" rowspan="2" id="SetSubmitAll"  type="submit" form="delayerSet_form" value="SubmitAll"></th>
+					<td><input class="dark-button" rowspan="2" id="SetRefresh"  type="button" form="delayerSet_form" value="Refresh" onclick="onRefresh_Click()"></th>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<input height="100%" form="onoff_form" name="delayeronoff" id="delayeronoff" type="checkbox" class="switch"><!--#lb_Delayer_OnOff-->
+						<form id="onoff_form" method="POST" action="/delayeronoff.cgi"></form>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div id = "delayerTable_div" style="background-color: none;">
+			<table id="delayerTable">
+				<tr>
+					<th><!--#lb_Delayer_No--></th>
+					<th><!--#lb_Delayer_OutState--></th>
+					<th><!--#lb_Delayer_Time--></th>
+					<th style="min-width: 120px"><!--#lb_btn_Operation--></th>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<textarea hidden id="delayerJson" name="delayerJson"></textarea>
+	
+
+	<!-- 用于显示临时变量 -->
+	<div id="div_delayerstate" hidden></div>
+
+	<button id="lb_btn_Sumbit" hidden><!--#lb_btn_Sumbit--></button>
+	<button id="lb_btn_SumbitAll" hidden><!--#lb_btn_SumbitAll--></button>
+	<button id="lb_btn_Refresh" hidden><!--#lb_btn_Refresh--></button>
+	<button id="lb_btn_Next" hidden><!--#lb_btn_Next--></button>
+	<button id="lb_btn_Previous" hidden><!--#lb_btn_Previous--></button>
+</body>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function() {  
+		httpsend_tag('POST','/webControl.cgi',true,'webSwitchPage','delayer');
+	});
+
+	var btn_submit_str = "/*#lb_btn_Sumbit*/";
+	var btn_submitAll_str = "/*#lb_btn_SumbitAll*/";
+	var btn_refresh_str = "/*#lb_btn_Refresh*/";
+	var btn_next_str = "/*#lb_btn_Next*/";
+	var btn_previous_str = "/*#lb_btn_Previous*/";
+	document.getElementById("SetRefresh").value = btn_refresh_str;
+	document.getElementById("SetSubmitAll").value = btn_submitAll_str;
+
+	//当开关按键被点击后,后台发送数据
+	document.getElementById("delayeronoff").addEventListener("click", function(event) {  
+		event.preventDefault(); // 阻止表单默认提交行为  
+		var xhr = new XMLHttpRequest();  
+		xhr.open("POST", "/delayeronoff.cgi", true);  
+		xhr.onreadystatechange = function() {  
+			if (xhr.readyState == 4 && xhr.status == 200) {  
+				refresh_set = 1; 
+			} else if (xhr.status != 200) {  
+			}  
+		};  
+		var formData = new FormData(document.getElementById("onoff_form"));  
+		var valueStr = '';  
+		for (var pair of formData.entries()) {  
+			valueStr += pair[0] + '=' + pair[1] + '&';  
+		}  
+		xhr.send(valueStr); 
+	});
+
+
+	function init(){
+		document.getElementById("delayerStart").value = "/*#delayerStart*/";
+		document.getElementById("delayerCount").value = "/*#delayerCount*/";
+		document.getElementById("delayerCycle").value = "/*#delayerCycle*/";
+		document.getElementById("delayerEndState").value = "/*#delayerEndState*/";
+	}
+	init();
+
+	
+
+	//定时器 用于定时刷新回读数据
+	var refresh_set = 1;
+	function TimerStart(timeout) {
+		setInterval(function() {
+			var url = "/delayerread.cgi";
+			httpsend_request('GET',url,true,function(responseText) {
+				document.getElementById("div_delayerstate").innerHTML = responseText;
+				//更新数据
+				document.getElementById("delayercurIdx").innerText = document.getElementById("delayercurIdx_disp").innerText;
+				document.getElementById("delayercurLoop").innerText = document.getElementById("delayercurLoop_disp").innerText;
+				document.getElementById("delayercurState").innerText = document.getElementById("delayercurState_disp").innerText;
+				document.getElementById("delayeronoff").checked = (document.getElementById("delayeronoff_disp").innerText == "on");
+				
+				if(refresh_set != 0){
+					refresh_set = 0;
+					document.getElementById("delayerStart").value = Number(document.getElementById("delayerStart_disp").innerText);
+					document.getElementById("delayerCount").value = Number(document.getElementById("delayerCount_disp").innerText);
+					document.getElementById("delayerCycle").value = Number(document.getElementById("delayerCycle_disp").innerText);
+					document.getElementById("delayerEndState").value = document.getElementById("delayerEndState_disp").innerText;
+				}
+				document.body.style.display = "block";
+			});
+		}, timeout);
+	}
+	
+
+	function onRefresh_Click(){
+		refresh_set = 1;
+	}
+
+	document.addEventListener('DOMContentLoaded', function() {  
+		TimerStart(100);
+	});
+	
+	
+	var delayermaxCount = "/*#delayermaxCount*/";
+
+	var disp_index = 0;
+	var disp_count = 7;
+	const baseRows = 1; //表格行偏移
+
+	//像设备请求获取数据
+	function requesetData(index,count) {
+		var url = "/delayerdata.cgi";
+		httpsend_request('POST',url,true,function(responseText) {
+			var receString = responseText;
+			var s=receString.indexOf("[");
+			var e=receString.indexOf("]")+1;
+			var jsonStr =  receString.substring(s,e);
+			{
+				var delayerTable = document.getElementById("delayerTable");
+				var delayerTableLen = delayerTable.rows.length - baseRows;
+				//删除所有行
+				if(delayerTableLen>0){
+					for(var i=0;i<delayerTableLen;++i){
+						delayerTable.deleteRow(baseRows);
+					}
+				}
+			}
+			Json2Table(jsonStr);
+			//对齐高度
+			document.getElementById("delayerParamTable").height = document.getElementById("delayerTable").height;
+			document.getElementById("delayerParamTable_div").height = document.getElementById("delayerTable_div").height;
+		},"delayerRequestIdx=" + index + "&"+"delayerRequestCount="+count);
+	}
+	function delayer_reLoad(index,count){
+		requesetData(index,count);
+	}
+	function delayer_loadNextPage(){
+		disp_index = parseInt(disp_index) + parseInt(disp_count);
+		if(disp_index > (delayermaxCount - disp_count))
+			disp_index = delayermaxCount - disp_count;
+		delayer_reLoad(disp_index,disp_count);
+	}
+	function delayer_loadPeriodPage(){
+		disp_index = parseInt(disp_index) - parseInt(disp_count);
+		if(disp_index < 0)
+			disp_index = 0;
+		delayer_reLoad(disp_index,disp_count);
+	}
+
+	//加载数据
+	delayer_reLoad(disp_index,disp_count);
+
+	
+	//提交当前选定行
+	function table_rowSubmit(obj) {
+		//obj.parentNode.parentNode.remove();
+		var json_Data = [];
+		var rowObj = {};
+		rowObj['No'] = parseInt(obj.parentNode.parentNode.cells[0].innerText);
+		rowObj['State'] = obj.parentNode.parentNode.cells[1].getElementsByTagName('select')[0].value;
+		rowObj['delayT'] = parseFloat(obj.parentNode.parentNode.cells[2].getElementsByTagName('Input')[0].value);
+		json_Data[0] = rowObj;
+		//打印Json字符串
+		//console.log(JSON.stringify(json_Data, null, 4));
+		var delayerJson_obj = document.getElementById("delayerJson");
+		delayerJson_obj.textContent = JSON.stringify(json_Data).toString();
+		httpsend_tag("POST","/delayerout.cgi",false,"delayerJson",document.getElementById("delayerJson").textContent);
+		delayer_reLoad(disp_index,disp_count);
+	}
+	
+	
+	//将表格数据通过Json格式上传
+	function table_submit() {
+		var tableObj = document.getElementById("delayerTable");
+		var json_Data = [];
+		for (var i = baseRows; i < (tableObj.rows.length-1); i++) {      //遍历Table的所有Row
+			var rowObj = {};
+			rowObj['No'] = parseInt(tableObj.rows[i].cells[0].innerText);
+			rowObj['State'] = tableObj.rows[i].cells[1].childNodes[0].value;
+			rowObj['delayT'] = parseFloat(tableObj.rows[i].cells[2].childNodes[0].value);
+			json_Data[i - baseRows] = rowObj;
+		}
+		//打印Json字符串
+		//console.log(JSON.stringify(json_Data, null, 4));
+		var delayerJson_obj = document.getElementById("delayerJson");
+		delayerJson_obj.textContent = JSON.stringify(json_Data).toString();
+		httpsend_tag("POST","/delayerout.cgi",false,"delayerJson",document.getElementById("delayerJson").textContent);
+		delayer_reLoad(disp_index,disp_count);
+	}
+
+	//行
+	function table_recover(new_no,new_state, new_delayT) {
+		var tableRow = document.getElementById("delayerTable").insertRow();
+		tableRow.insertCell(0).innerHTML = new_no;
+		if(new_state == 'ON'){
+			tableRow.insertCell(1).innerHTML = "<select class='setVal' style='min-width:70px'>	\
+										<option value= 'ON' selected>ON</option>	\
+										<option value= 'OFF'> OFF</option></select>";
+		}else{
+			tableRow.insertCell(1).innerHTML = "<select class='setVal' style='min-width:70px'>	\
+										<option value= 'ON' >ON</option>	\
+										<option value= 'OFF' selected> OFF</option></select>";
+		}
+		tableRow.insertCell(2).innerHTML = "<input class='setVal' type='number' min='1' step='0.1' 	 value='" + new_delayT + "' />";
+		tableRow.insertCell(3).innerHTML = "<button class='dark-button' onclick = 'table_rowSubmit(this)'>" + btn_submit_str + "</button>";
+	}
+
+
+	//解析JSON数据并存入表格
+	function Json2Table(json_string) {
+		var json_obj = JSON.parse(json_string);
+		for (var i = 0; i < json_obj.length; ++i) {
+			table_recover(json_obj[i].No, json_obj[i].State,Number(json_obj[i].delayT).toFixed(1));
+		}
+		// 插入Delayer表格操作
+		var tableRow = document.getElementById("delayerTable").insertRow();
+		tableRow.insertCell(0).innerHTML = "<button class='dark-button' onclick='delayer_loadPeriodPage();'>" + btn_previous_str + "</button>";
+		tableRow.insertCell(1).innerHTML = "<button class='dark-button' onclick='delayer_reLoad(disp_index,disp_count);'>" + btn_refresh_str + "</button>";
+		tableRow.insertCell(2).innerHTML = "<button class='dark-button' onclick='delayer_loadNextPage();'>" + btn_next_str +"</button>";
+		tableRow.insertCell(3).innerHTML = "<button class='dark-button' onclick='table_submit()'>"+ btn_submitAll_str +" </button>";
+	}
+</script>

@@ -1,0 +1,105 @@
+
+table {
+    /* border-width: 0px; */
+    /* border-color: #383838; */
+    /* border-style: outset; */
+    /* text-align: center; */
+    /* font: bold 26px "微软雅黑"; */
+    /* color: #ffffff; */
+    /* background-color: #383838; */
+    /* border-collapse: collapse;  */
+    border-spacing: 0;
+}
+table tr,
+table th,
+table td {
+    /* width: auto; */
+    height: 35px;
+    border-width: 2px;
+    border-color: #cde1ee;
+    border-style: outset;
+    text-align: center;
+    font: bold 20px "oppo san";
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+/* 参数回读 */
+.readVal {
+    /* width: 90%; */
+    /* height: 25px; */
+    font: bold 20px "微软雅黑";
+    background-color: #00000000;
+    border: none;
+    /* border-width: 1px; */
+    text-align: center;
+    color: #6e3f00;
+}
+/* 参数设置 */
+.setVal {
+    /* width: 90%; */
+    /* height: 25px; */
+    font: bold 20px "微软雅黑";
+    background-color: #00000000;
+    border: none;
+    /* border-width: 1px; */
+    text-align: center;
+    color: #04b104;
+}
+
+
+/* Switch开关样式 */
+input[type='checkbox'].switch {
+    outline:none;
+    appearance:none;
+    -webkit-appearance:none;
+    -moz-appearance:none;
+    position:relative;
+    width: 40px;
+    height: 20px;
+    background:#ccc;
+    border-radius: 10px;
+}
+input[type='checkbox'].switch::after {
+    content: '';
+    display:inline-block;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    background:#fff;
+    box-shadow: 0, 0, 0px, #999;
+    /* top: 2px; */
+    position:absolute;
+    left: 2px;
+}
+input[type='checkbox'].switch:checked {
+    background:rgb(19, 206, 102);
+}
+/* 当input[type=checkbox]被选中时：伪元素显示下面样式 位置发生变化 */
+input[type='checkbox'].switch:checked::after {
+    content: '';
+    position:absolute;
+    left: 55%;
+    /* top: 2px; */
+}
+
+/* 黑暗风格的按键 */
+.dark-button {  
+    background-color: #333;  
+    color: #fff;  
+    border: none;  
+    border-radius: 5px;  
+    /* padding: 10px 20px;   */
+    font-size: 20px;  
+    font-weight: bold;  
+    cursor: pointer;  
+    /* height: 25px; */
+}  
+    
+.dark-button:hover {  
+    background-color: #666;  
+}  
+    
+.dark-button:active {  
+    background-color: #000;  
+}

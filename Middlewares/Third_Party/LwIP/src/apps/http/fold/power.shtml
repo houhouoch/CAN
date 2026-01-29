@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>HomePage</title>
+	<meta charset=utf-8 />
+	<script src="main.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+	<style>
+		:root {
+			--industrial-blue: #007bff;  /* 调整为更明亮的蓝色 */
+			--hmi-green: #28a745;       /* 调整为自然绿色 */
+			--warning-red: #dc3545;     /* 调整为警示红 */
+			--panel-gray: #f8f9fa;      /* 调整为浅灰色 */
+		}
+		
+		body {
+			background-color: #ffffff;  /* 白色背景 */
+			color: #212529;             /* 深灰色文字 */
+			font-family: 'Segoe UI', system-ui;
+			padding: 20px;
+		}
+		
+		.power-panel {
+			display: grid;
+			grid-template-columns: repeat(2, 1fr);
+			gap: 20px;
+			max-width: 1200px;
+			margin: 0 auto;
+		}
+		
+		.meter-container {
+			background: #ffffff;                    /* 白色背景 */
+			border: 1px solid #dee2e6;             /* 浅灰色边框 */
+			border-radius: 8px;
+			padding: 20px;
+			box-shadow: 0 2px 6px rgba(0,0,0,0.1); /* 更柔和的阴影 */
+		}
+		
+		.analog-meter {
+			text-align: center;
+			margin: 15px 0;
+		}
+		
+		.value-display {
+			letter-spacing:3px;
+			font-size: 2.5em;
+			color: var(--industrial-blue);        /* 使用蓝色作为主色 */
+			text-shadow: 0 0 8px rgba(0,123,255,0.1); /* 更柔和的发光效果 */
+		}
+		
+		.unit {
+			font-size: 0.6em;
+			color: #6c757d;                      /* 中灰色 */
+		}
+		
+		.control-panel {
+			background: #ffffff;                 /* 白色背景 */
+			border: 1px solid #dee2e6;          /* 浅灰色边框 */
+			padding: 20px;
+			border-radius: 8px;
+			box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+		}
+		
+		.param-control {
+			margin: 15px 0;
+		}
+		
+		.param-label {
+			display: block;
+			margin-bottom: 5px;
+			color: #495057;                     /* 深灰色 */
+		}
+		
+		.param-input {
+			letter-spacing:2px;
+			width: 90%;
+			padding: 8px;
+			background: #ffffff;               /* 白色背景 */
+			border: 1px solid #ced4da;        /* 浅灰色边框 */
+			color: var(--industrial-blue);    /* 蓝色文字 */
+			border-radius: 4px;
+			font-size: 1em;
+			transition: all 0.2s ease;
+		}
+		
+		.param-input:focus {
+			border-color: var(--industrial-blue);
+			box-shadow: 0 0 0 3px rgba(0,123,255,0.25);
+		}
+		
+		/* 开关样式修改 */
+		.slider {
+			background-color: #adb5bd;        /* 浅灰色 */
+		}
+		
+		input:checked + .slider {
+			background-color: var(--hmi-green); /* 使用绿色表示激活状态 */
+		}
+		
+		.status-led {
+			background: #e9ecef;             /* 浅灰色 */
+		}
+		
+		.status-led.active {
+			background: var(--hmi-green);
+			box-shadow: 0 0 8px rgba(40,167,69,0.3); /* 柔和的发光效果 */
+		}
+		
+		.button {
+			background: var(--industrial-blue);
+			border: 2px solid #0056b3;       /* 更深的蓝色边框 */
+			color: white;
+			padding: 10px 20px;
+			border-radius: 5px;
+			cursor: pointer;
+			transition: all 0.3s;
+		}
+		
+		.button:hover {
+			background: #0056b3;            /* 更深的蓝色悬停效果 */
+		}
+		
+		/* 新增白天模式过渡效果 */
+		transition: background-color 0.3s ease, color 0.3s ease;
+		
+		/* 表格样式修改 */
+		#listParamTable, #listTable {
+			background: #ffffff;
+			border: 1px solid #dee2e6;
+		}
+		
+		#listParamTable th, #listTable th {
+			background-color: var(--industrial-blue);
+			color: white;
+		}
+		
+		#listParamTable td, #listTable td {
+			background-color: #f8f9fa;      /* 浅灰色背景 */
+			border-color: #dee2e6;
+		}
+		
+		/* 响应式调整 */
+		@media (max-width: 768px) {
+			.meter-container, .control-panel {
+				box-shadow: none;
+				border: 1px solid #dee2e6;
+			}
+		}
+		</style>
+</head>
+
+
+<body>
+	<div class="power-panel">
+		<!-- 实时数据显示 -->
+		<div class="meter-container">
+		  <h2>Monitor</h2>
+		  	<div class="analog-meter">
+				<div class="value-display" id="curVol">---<span class="unit">V</span></div>
+				<div class="param-label">Voltage</div>
+		  	</div>
+		  	<div class="analog-meter">
+				<div class="value-display" id="curCur">---<span class="unit">A</span></div>
+				<div class="param-label">Current</div>
+		  	</div>
+		  	<div class="analog-meter">
+				<div class="value-display" id="curWat">---<span class="unit">W</span></div>
+				<div class="param-label">Power</div>
+		  	</div>
+
+			  <div class="analog-meter">
+				<div class="value-display" id="curState"></div>
+				<div class="param-label">Status</div>
+		  	</div>
+		</div>
+	  
+		<!-- 参数设置 -->
+		<form id="outset_form" method="POST" action="/output.cgi">
+			<div class="control-panel">
+				<h2>OutSet</h2>
+				<div class="param-control">
+					<label class="param-label">Voltage (V)</label>
+					<input form="outset_form" type="number" class="param-input" name="setVol" id="setVol" value="---" step="0.001">
+				</div>
+				<div class="param-control">
+					<label class="param-label">Current (A)</label>
+					<input form="outset_form" type="number" class="param-input" name="setCur" id="setCur" value="---" step="0.001">
+				</div>
+
+				<div class="param-control">
+					<label class="param-label">OVP Value(V)</label>
+					<div style="white-space: nowrap;">
+						<select form="outset_form" name="setOVP_on" id="setOVP_on">  
+							<option value="ON"> √ </option>  
+							<option value="OFF"> × </option>  
+						</select>
+						<input form="outset_form" type="number" class="param-input" name="setOVP" id="setOVP" value="---" step="0.001">
+					</div>
+				</div>
+				<div class="param-control">
+					<label class="param-label">OCP Value(A)</label>
+					<div style="white-space: nowrap;">
+						<select form="outset_form" name="setOCP_on" id="setOCP_on">  
+							<option value="ON"> √ </option>  
+							<option value="OFF"> × </option>  
+						</select>
+						<input form="outset_form" type="number" class="param-input" name="setOCP" id="setOCP" value="---" step="0.001">
+					</div>
+				</div>
+					<input form="onoff_form" name="setOnoff" id="setOnoff" type="checkbox" class="switch" height="20px"><!--#lb_Home_OnOff-->
+					<input class="button" type="button" id = "SetRefresh" value="Refresh" style="font-family: 24px '微软雅黑';" onclick="refresh_onClicked()">
+					<input class="button" type="submit" id = "SetSubmit" value="Submit" style="font-family: 24px '微软雅黑';">
+			</div>
+		</form>
+		<script>
+			function refresh_onClicked() {
+				refresh_set = 1;
+			}
+		</script>
+		
+	</div>
+
+	<form id="onoff_form" method="POST" action="/onoff.cgi"></form>
+	
+	
+
+	<div id="div_temp" hidden></div>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {  
+			httpsend_tag('POST','/webControl.cgi',true,'webSwitchPage','home');
+		});
+
+		var btn_submit_str = "/*#lb_btn_Sumbit*/";
+		var btn_refresh_str = "/*#lb_btn_Refresh*/";
+
+		document.getElementById("SetRefresh").value = btn_refresh_str;
+		document.getElementById("SetSubmit").value = btn_submit_str;
+
+
+		//用于全局中设置数据的刷新标志
+		var refresh_set = 1;
+
+		//当输入框失去焦点后,将其数值显示位固定小数点的格式
+		document.getElementById("setVol").addEventListener("blur", function(event){
+			this.value = Number(this.value).toFixed(3);
+		});
+		document.getElementById("setCur").addEventListener("blur", function(event){
+			this.value = Number(this.value).toFixed(3);
+		});
+		document.getElementById("setOVP").addEventListener("blur", function(event){
+			this.value = Number(this.value).toFixed(3);
+		});
+		document.getElementById("setOCP").addEventListener("blur", function(event){
+			this.value = Number(this.value).toFixed(3);
+		});
+		
+		// //当输出开关按键被点击后,后台发送数据
+		document.getElementById("setOnoff").addEventListener("click", function(event) {  
+			event.preventDefault(); // 阻止表单默认提交行为  
+			var xhr = new XMLHttpRequest();  
+			xhr.open("POST", "/onoff.cgi", true);  
+			xhr.onreadystatechange = function() {  
+				if (xhr.readyState == 4 && xhr.status == 200) {  
+					refresh_set = 1; 
+				} else if (xhr.status != 200) {  
+				}  
+			};  
+			var formData = new FormData(document.getElementById("onoff_form"));  
+			var valueStr = '';  
+			for (var pair of formData.entries()) {  
+				valueStr += pair[0] + '=' + pair[1] + '&';  
+			}  
+			xhr.send(valueStr); 
+		});
+		//当输出设置被提交后,后台发送数据
+		document.getElementById("outset_form").addEventListener("submit", function(event) {  
+			event.preventDefault(); // 阻止表单默认提交行为  
+			var xhr = new XMLHttpRequest();  
+			xhr.open("POST", "/output.cgi", true);  
+			xhr.onreadystatechange = function() {  
+				if (xhr.readyState == 4 && xhr.status == 200) { 
+					refresh_set = 1;  
+				} else if (xhr.status != 200) {  
+				}  
+			};  
+			var formData = new FormData(this);  
+			var valueStr = '';  
+			for (var pair of formData.entries()) {  
+				valueStr += pair[0] + '=' + pair[1] + '&';  
+			}  
+			xhr.send(valueStr); 
+		});
+
+		
+
+		
+		//用于限制设置的最大输出功率
+		function on_outsetChange(){
+			//获取电压电流
+			var volSet = parseFloat(document.getElementById("setVol").value);
+			var curSet = parseFloat(document.getElementById("setCur").value);
+			//最大输出电流
+			var curMax = parseFloat(document.getElementById("maxCur_disp").innerText);
+			//当前电压下,最大功率电流
+			var PowerMax = parseFloat(document.getElementById("maxWat_disp").innerText);
+			var max = PowerMax/(volSet+0.0001);
+			max = MIN(curMax,max);
+
+			if(max < curSet){
+				document.getElementById("setCur").value = Number(max).toFixed(3);
+			}
+		}
+
+		//刷新设置的数据
+		function outset_Refresh(){
+			document.getElementById("setVol").value = Number(document.getElementById("setVol_disp").innerText).toFixed(3);
+			document.getElementById("setCur").value = Number(document.getElementById("setCur_disp").innerText).toFixed(3);
+			document.getElementById("setOnoff").checked = (document.getElementById("setOnoff_disp").innerText == "ON");
+			document.getElementById("setOVP").value = Number(document.getElementById("setOVP_disp").innerText).toFixed(3);
+			document.getElementById("setOVP_on").value = (document.getElementById("setOVP_on_disp").innerText == "ON")?"ON":"OFF";
+			document.getElementById("setOCP").value = Number(document.getElementById("setOCP_disp").innerText).toFixed(3);
+			document.getElementById("setOCP_on").value = (document.getElementById("setOCP_on_disp").innerText == "ON")?"ON":"OFF";
+			//限制
+			document.getElementById("setVol").min = 0;
+			document.getElementById("setVol").max = Number(document.getElementById("maxVol_disp").innerText).toFixed(3);
+			document.getElementById("setCur").min = 0;
+			document.getElementById("setCur").max = Number(document.getElementById("maxCur_disp").innerText).toFixed(3);
+			document.getElementById("setOVP").min = 0;
+			document.getElementById("setOVP").max = Number(document.getElementById("maxVol_disp").innerText).toFixed(3);
+			document.getElementById("setOCP").min = 0;
+			document.getElementById("setOCP").max = Number(document.getElementById("maxCur_disp").innerText).toFixed(3);
+		}
+
+		//定时器 用于定时刷新回读数据
+		setInterval(function() {
+			var url = "/powerread.cgi";
+			httpsend_request('GET',url,true,function(responseText) {
+				document.getElementById("div_temp").innerHTML = responseText;
+				// document.getElementById("div_temp").height = document.getElementById("div_outset").height;
+				//更新数据
+				document.getElementById("curVol").innerText = document.getElementById("curVol_disp").innerText;
+				document.getElementById("curCur").innerText = document.getElementById("curCur_disp").innerText;
+				document.getElementById("curWat").innerText = document.getElementById("curWat_disp").innerText;
+				document.getElementById("curState").innerText = document.getElementById("curState_disp").innerText;
+				if(refresh_set != 0){
+					refresh_set = 0;
+					outset_Refresh();
+				}
+				// document.getElementById("curCur").width = document.getElementById("div_outset").width;
+				
+				// document.body.style.display = "block";
+			});
+		}, 200);
+	</script>
+
+</body>
+
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="./main.css">
+    <script type="text/javascript" src="./main.js"></script>
+</head>
+
+<body>
+    <div id="main" class="container">
+        <div class="desTitle">Select or Enter Command:
+        <select id="ScpiCmdSel" name="CommCmd" onchange="ScpiSelCmd();">
+            <option value="">Select</option>
+            <option>*IDN?</option>
+            <option>*CLS</option>
+            <option>*RST</option>
+            <option>*TST?</option>
+            <option>*OPC</option>
+            <option>*OPC?</option>
+            <option>*WAI</option>
+            <option>*ESE</option>
+            <option>*ESE?</option>
+            <option>*ESR?</option>
+            <option>*SRE</option>
+            <option>*SRE?</option>
+            <option>*STB?</option>
+        </select>
+        </div>
+        <textarea id="ScpiCmd" rows="4" autofocus></textarea><br>
+        <button type="button" class="btn" onclick="blur(); ScpiWrite();">Write</button>
+        <button type="button" class="btn" onclick="blur(); ScpiRead();">Read</button>
+        <button type="button" class="btn" onclick="blur(); ScpiQuery();">Query</button>
+        <button id="QueryErr" type="button" class="btn" onclick="blur(); ScpiRdErr();">SYST:ERR?</button>
+        <br>
+        <br>
+        <div class="desTitle">History:</div>
+        <textarea id="ScpiHistory" rows="20" readonly="true"></textarea><br>
+        <button type="button" class="btn" onclick="blur(); ScpiClsHst();">Clear History</button>
+    </div>
+    <script type="text/javascript">
+        getById("ScpiCmd").focus();
+    </script>
+</body>
+
+</html>

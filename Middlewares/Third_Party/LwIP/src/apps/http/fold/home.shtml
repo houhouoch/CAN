@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="./main.css">
+	<script type="text/javascript" src="./main.js"></script>
+</head>
+
+<body>
+<div id="main" class="container">
+	<div class="desTitle">Description</div>
+	<table>
+		<tr>
+			<td>Model number</td> 			<td><!--#aboutModel--></td>
+		</tr>
+		<tr>
+			<td>Serial number</td> 			<td><!--#aboutSerialNum--></td>
+		</tr>
+		<tr>
+			<td>Firmware version</td> 		<td><!--#aboutFirmVersion--></td>
+		</tr>
+		<tr>
+			<td>Power version</td> 		<td><!--#aboutPowerVersion--></td>
+		</tr>
+		<tr>
+			<td>Description</td>			<td><!--#aboutDescription--></td>
+		</tr>
+	</table>
+	<br>
+	<div class="desTitle">VISA instrument infomation</div>
+	<table>
+		<tr>
+			<td>mDNS hostname</td>			<td><!--#netHostName-->.local</td>
+		</tr>
+		<tr>
+			<td>IPv4 address</td>			<td><!--#netIPv4--></td>
+		</tr>
+		<tr>
+			<td>Ethernet MAC</td> 			<td><!--#netMAC--></td>
+		</tr>
+		<tr>
+			<td>Auto-MDIX</td> 				<td>Yes</td>
+		</tr>
+		
+		<tr>
+			<td>VXI-11 LAN protocol</td> 	<td><!--#visaLANProtocol--></td>
+		</tr>
+		<tr>
+			<td>TCP/IP SOCKET protocol</td>	<td><!--#visaSocketProtocol--></td>
+		</tr>
+		<tr>
+			<td>USB <i>(USBTMC)</i></td> 	<td><!--#visaUSBProtocol--></td>
+		</tr>
+		
+	</table>
+</div>
+</body>
+
+</html>

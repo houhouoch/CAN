@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="./main.css">
+	<script type="text/javascript" src="./main.js"></script>
+</head>
+
+<body>
+	<div id="main" class="container">
+		<div class="desTitle">LAN settings</div>
+		<table id="viewLan">
+			<tr>
+				<td>DHCP</td>				<td id="dhcp"><!--#netDHCP--></td>
+			</tr>
+			<tr>
+				<td>IP address</td>			<td id="ip"><!--#netIPv4--></td>
+			</tr>
+			<tr>
+				<td>Subnet mask</td>		<td id="mask"><!--#netNetMask--></td>
+			</tr>
+			<tr>
+				<td>Default gateway</td>	<td id="gate"><!--#netGateWay--></td>
+			</tr>
+		</table>
+		<table id="editLan">
+			<tr>
+				<td><label for="set_dhcp">DHCP</label></td>
+				<td><input type="checkbox" id="set_dhcp" onchange="ClickDhcp(this);"></td>
+			</tr>
+			<tr>
+				<td><label for="set_ip">IP address</label></td>
+				<td><input type="text" id="set_ip" value=""></td>
+			</tr>
+			<tr>
+				<td><label for="set_mask">Subnet mask</label></td>
+				<td><input type="text" id="set_mask" value=""></td>
+			</tr>
+			<tr>
+				<td><label for="set_gate">Default gateway</label></td>
+				<td><input type="text" id="set_gate" value=""></td>
+			</tr>
+		</table>
+		<button id="lanEditBtn" type="button" class="btn" onclick="blur(); ClickEditLan();">Edit</button>
+		<button id="lanOkBtn"   type="button" class="btn" onclick="blur(); ClickApplyLan();">Apply</button>
+		<br><br>
+
+		<div class="desTitle">Change password</div>
+		<form autocomplete="cc-csc">
+			<table>
+			<tr hidden="true">
+				<td><label for="userName">Current password</label></td>
+				<td><input id="userName" type="text" value="default" autocomplete="cc-csc"></td>
+			</tr>
+			<tr>
+				<td><label for="oldPw">Current password</label></td>
+				<td><input id="oldPw" type="password" maxlength="8" autocomplete="cc-csc"></td>
+			</tr>
+			<tr>
+				<td><label for="newPw">New password</label></td>
+				<td><input id="newPw" type="password" maxlength="8" autocomplete="cc-csc"></td>
+			</tr>
+			<tr>
+				<td><label for="confirmPw">Confirm password</label></td>
+				<td><input id="confirmPw" type="password" maxlength="8" autocomplete="cc-csc"></td>
+			</tr>
+			</table>
+		</form>
+		<button type="button" class="btn" onclick="blur(); ChkPw();">Change Password</button>
+	</div>
+
+	<script type="text/javascript">
+		if(inner(getById("dhcp")) == "true") {
+			inner(getById("dhcp"), "On")
+		}else {
+			inner(getById("dhcp"), "Off")
+		}
+		if(getById("viewLan").hidden != true) {
+			IsEditLan = 0;
+			getById("editLan").hidden = true;
+			getById("lanOkBtn").style.display = "none";
+			inner(getById("lanEditBtn"), "Edit");
+		}
+	</script>
+</body>
+
+</html>

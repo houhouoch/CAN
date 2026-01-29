@@ -1,0 +1,13 @@
+<table style="width:100%;" hidden>
+	<tr>
+		<th rowspan="1"><label id="listcurIdx_disp"><!--#listcurIdx--></label></th>
+		<th rowspan="1"><label id="listcurLoop_disp"><!--#listcurLoop--></label></th>
+		<th rowspan="1"><label id="listcurState_disp"><!--#listcurState--></label></th>
+
+		<th rowspan="1"><label id="listStart_disp"><!--#listStart--></label></th>
+		<th rowspan="1"><label id="listCount_disp"><!--#listCount--></label></th>
+		<th rowspan="1"><label id="listCycle_disp"><!--#listCycle--></label></th>
+		<th rowspan="1"><label id="listEndState_disp"><!--#listEndState--></label></th>
+		<th rowspan="1"><label id="listonoff_disp"><!--#listonoff--></label></th>
+	</tr>
+</table>

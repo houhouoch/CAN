@@ -1,0 +1,186 @@
+html { height: 100%; }
+
+body {
+	position: relative;
+	width: 100%;
+	min-width: 1080px;
+	min-height: 100%;
+	margin: auto;
+	padding: 0;
+	border: 0;
+	font-size: 14px;
+	font-family: "Helvetica Neue", Helvetica, Arial, Sans-Serif;
+	color: #333;
+	background-color: #FFF;
+}
+
+
+
+table {
+	width: 100%;
+	border-right: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	border-spacing: 0;
+}
+table td {
+	border-top: 1px solid #ddd;
+	border-left: 1px solid #ddd;
+	padding-top: 8px;
+	padding-right: 6px;
+	padding-bottom: 8px;
+	padding-left: 6px;
+}
+table tr {
+	height:40px;
+}
+table td:nth-child(1) { width: 25%; }
+table td:nth-child(2) { width: 75%; }
+
+textarea {
+	resize: none;
+}
+
+.font24 {font-size:24px;}
+.font14 {font-size:14px;}
+
+.norCursor { cursor: default; }
+
+.container {
+	position:relative;
+	margin: auto;
+	min-width: 740px;
+	max-width: 1050px;
+}
+
+.navItemCont {
+	/* position: relative; */
+	float:left;
+	display:inline-block;
+	top:0px;
+	width: auto;
+}
+
+.loginCont {
+	/* position:relative; */
+	float:right;
+	width: 90px;
+}
+
+.navItem {
+	position: relative;
+	display: inline-block;
+	height: 22px;
+	padding: 4px 10px;
+	margin-right: 20px;
+	color: #FFF;
+	font-weight: bold;
+	text-decoration: none;
+	border-radius: 5px;
+}
+
+.btn {
+	min-width: 70px;
+	padding: 5px 12px;
+	margin:15px 50px 8px 0;
+	border-width: 0px;
+	color: #fff;
+	background: #CC2828;
+	border-radius: 4px;
+	text-align: center;
+	font-size:16px;
+	font-weight:bold;
+}
+.btn:hover {
+	cursor:pointer;
+	background: #8e1c1c;
+}
+
+.desTitle { margin: 20px 0 8px; font-size: 18px; font-weight:bold;}
+
+.panelSub { position: absolute; }
+
+
+#top {
+	position: relative;
+	height: 70px;
+	background-color: #666;
+}
+
+#logo {
+	position:relative;
+	top:10px;
+}
+
+#topTxtCont {
+	position: relative;
+	display: inline-block;
+	color:#FFF;
+	top: 5px;
+	margin-left: 50px;
+}
+
+#userhead{
+	position: relative;
+	top: 5px;
+	width: 20px;
+}
+
+#loginout{
+	color: #FFF;
+	text-decoration: none;
+}
+
+#nav {
+	height: 30px;
+	margin-bottom: 20px;
+	font-size: 18px;
+	background-color: #999;
+}
+
+#main {
+	position: relative;
+	padding-bottom: 50px;
+}
+
+#bottom {
+	position: absolute;
+	width: 100%;
+	bottom: 0px;
+	height: 22px;
+	padding-top: 8px; 
+	text-align: center;
+	color: #FFF;
+	background-color: #666;
+}
+
+#IdentifyCont  {position:relative; margin-top:5px;}
+#IdentifyLabel {position:relative; top:-2px;}
+
+#panelCont {position:relative; width:800px; height:auto; margin:auto;}
+#panel {position:relative; width:100%;}
+#lcd {top:116px; left:63px; width:345px; height:195px; cursor:pointer}
+
+#ScpiCmdSel {position:relative; margin-left:10px; top:-1px;}
+#ScpiCmd{position:relative; width:800px}
+#ScpiHistory{position:relative; width:800px}
+#QueryErr 	{position:absolute; left:690px;}
+
+#HomeLed { left:460px; top:73px; width:55px; height:33px;}
+#MenuLed { left:535px; top:73px; width:55px; height:33px;}
+#WaveLed { left:610px; top:73px; width:55px; height:33px;}
+#LockLed { left:685px; top:73px; width:55px; height:33px;}
+
+#Ch1Led { left:452px; top:274px; width:30px; height:42px;}
+#Ch2Led { left:505px; top:274px; width:30px; height:42px;}
+#Ch3Led { left:559px; top:274px; width:30px; height:42px;}
+#Ch4Led { left:611px; top:274px; width:30px; height:42px;}
+
+#Ch1OnOffLed { left:452px; top:324px; width:30px; height:42px;}
+#Ch2OnOffLed { left:505px; top:324px; width:30px; height:42px;}
+#Ch3OnOffLed { left:559px; top:324px; width:30px; height:42px;}
+#Ch4OnOffLed { left:611px; top:324px; width:30px; height:42px;}
+
+#Ch1CcCvLed { left:200px; top:400px; width:28px; height:18px;}
+#Ch2CcCvLed { left:336px; top:400px; width:28px; height:18px;}
+#Ch3CcCvLed { left:538px; top:400px; width:28px; height:18px;}
+#Ch4CcCvLed { left:673px; top:400px; width:28px; height:18px;}

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset=utf-8 />
+<style>
+.power-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-family: Arial, sans-serif;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.power-table th {
+    background-color: #2c3e50;
+    color: white;
+    padding: 12px;
+    text-align: left;
+    border-bottom: 2px solid #34495e;
+}
+
+.power-table td {
+    padding: 12px;
+    border-bottom: 1px solid #ecf0f1;
+}
+
+.power-table tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+.power-table tr:hover {
+    background-color: #f1f4f7;
+}
+
+.status {
+    color: #27ae60;
+    font-weight: bold;
+}
+
+.paused {
+    color: #e74c3c;
+}
+
+.td_voltage {
+    color: #2980b9;
+}
+
+.td_current {
+    color: #8e44ad;
+}
+
+.td_time {
+    color: #f39c12;
+}
+
+.btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 2px;
+}
+
+.btn-start {
+    background-color: #2ecc71;
+    color: white;
+}
+
+.btn-pause {
+    background-color: #e67e22;
+    color: white;
+}
+
+.btn-edit {
+    background-color: #3498db;
+    color: white;
+}
+</style>
+</head>
+<body>
+
+<table class="power-table">
+    <thead>
+        <tr>
+            <th>状态</th>
+            <th>已暂停</th>
+            <th>No</th>
+            <th>电压(V)</th>
+            <th>电流(A)</th>
+            <th>时间(s)</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="status">运行中</td>
+            <td class="paused">否</td>
+            <td>1</td>
+            <td class="voltage">12.34</td>
+            <td class="current">0.45</td>
+            <td class="time">120</td>
+            <td>
+                <button class="btn btn-pause">暂停</button>
+                <button class="btn btn-edit">编辑</button>
+            </td>
+        </tr>
+        <!-- 更多数据行 -->
+        <tr>
+            <td class="status">已暂停</td>
+            <td class="paused">是</td>
+            <td>2</td>
+            <td class="voltage">0.00</td>
+            <td class="current">0.00</td>
+            <td class="time">0</td>
+            <td>
+                <button class="btn btn-start">启动</button>
+                <button class="btn btn-edit">编辑</button>
+            </td>
+        </tr>
+        <!-- 添加更多行... -->
+    </tbody>
+</table>
+
+</body>
+</html>

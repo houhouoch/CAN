@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>双通道平滑波形监测系统</title>
+    <meta charset=utf-8 />
+    <style>
+        #waveform {
+            border: 1px solid #e0e0e0;
+            background: #f8f9fb;
+        }
+        .controls {
+            margin: 10px 0;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .controls > * {
+            margin-right: 15px;
+            vertical-align: middle;
+        }
+        .legend {
+            margin: 10px 0;
+        }
+        .legend-item {
+            display: inline-block;
+            margin-right: 25px;
+        }
+        .legend-color {
+            width: 20px;
+            height: 12px;
+            display: inline-block;
+            vertical-align: middle;
+            border-radius: 2px;
+        }
+        button {
+            padding: 6px 15px;
+            background: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #1976D2;
+        }
+        select {
+            padding: 4px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="controls">
+        <button onclick="toggleRefresh()" id="toggleBtn">暂停刷新</button>
+        <label>刷新间隔：
+            <select id="interval" onchange="changeInterval()">
+                <option value="200">0.2秒</option>
+                <option value="500" selected>0.5秒</option>
+                <option value="1000">1秒</option>
+            </select>
+        </label>
+        <label>平滑度：
+            <input type="range" id="smoothness" min="0" max="0.5" step="0.05" 
+                   value="0.2" oninput="updateSmoothness(this.value)" style="vertical-align: middle;">
+            <span id="smoothnessValue">0.2</span>
+        </label>
+    </div>
+    <div class="legend">
+        <div class="legend-item">
+            <span class="legend-color" style="background: #2196F3;"></span>
+            <span>电压 (V)</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-color" style="background: #FF5722;"></span>
+            <span>电流 (A)</span>
+        </div>
+    </div>
+    <canvas id="waveform" width="1200" height="600"></canvas>
+
+    <script>
+        // 系统配置
+        const config = {
+            maxPoints: 300,        // 显示数据点数
+            voltageRange: [-5, 25], // 电压量程(V)
+            currentRange: [-1, 6],  // 电流量程(A)
+            padding: {              // 画布边距
+                top: 50, 
+                right: 80, 
+                bottom: 60, 
+                left: 80 
+            },
+            colors: {
+                voltage: '#2196F3',
+                current: '#FF5722',
+                grid: '#e0e0e0',
+                axis: '#666'
+            }
+        };
+
+        // 运行时状态
+        let isRefreshing = true;
+        let smoothing = 0.2;
+        let voltageData = new Array(config.maxPoints).fill(12);
+        let currentData = new Array(config.maxPoints).fill(3);
+        let canvas, ctx;
+        
+        // 初始化系统
+        function init() {
+            canvas = document.getElementById('waveform');
+            ctx = canvas.getContext('2d');
+            ctx.imageSmoothingEnabled = true;
+            drawStaticElements();
+            startRefresh();
+            requestAnimationFrame(drawWaveform);
+        }
+
+        // 绘制静态元素
+        function drawStaticElements() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // 绘制坐标轴
+            ctx.strokeStyle = config.colors.axis;
+            ctx.lineWidth = 1.5;
+            
+            // 电压Y轴（左侧）
+            ctx.beginPath();
+            ctx.moveTo(config.padding.left, config.padding.top);
+            ctx.lineTo(config.padding.left, canvas.height - config.padding.bottom);
+            ctx.stroke();
+
+            // 电流Y轴（右侧）
+            ctx.beginPath();
+            ctx.moveTo(canvas.width - config.padding.right, config.padding.top);
+            ctx.lineTo(canvas.width - config.padding.right, canvas.height - config.padding.bottom);
+            ctx.stroke();
+
+            // X轴
+            ctx.beginPath();
+            ctx.moveTo(config.padding.left, canvas.height - config.padding.bottom);
+            ctx.lineTo(canvas.width - config.padding.right, canvas.height - config.padding.bottom);
+            ctx.stroke();
+
+            // 绘制刻度系统
+            drawYAxis(config.voltageRange, config.padding.left - 30, 'V', config.colors.voltage);
+            drawYAxis(config.currentRange, canvas.width - config.padding.right + 40, 'A', config.colors.current);
+            drawXAxis();
+        }
+
+        // 绘制Y轴刻度
+        function drawYAxis(range, xPos, unit, color) {
+            ctx.fillStyle = color;
+            ctx.font = '13px Arial';
+            ctx.textAlign = 'center';
+            
+            const steps = 5;
+            const graphHeight = canvas.height - config.padding.top - config.padding.bottom;
+            
+            for (let i = 0; i <= steps; i++) {
+                const value = range[0] + (range[1] - range[0]) * (i / steps);
+                const y = canvas.height - config.padding.bottom - (i/steps)*graphHeight;
+                
+                // 刻度值
+                ctx.fillText(value.toFixed(1), xPos, y + 4);
+                
+                // 网格线
+                ctx.strokeStyle = config.colors.grid;
+                ctx.setLineDash([2, 2]);
+                ctx.beginPath();
+                ctx.moveTo(config.padding.left, y);
+                ctx.lineTo(canvas.width - config.padding.right, y);
+                ctx.stroke();
+                ctx.setLineDash([]);
+            }
+            
+            // 单位标识
+            ctx.save();
+            ctx.translate(xPos - 25, canvas.height/2);
+            ctx.rotate(-Math.PI/2);
+            ctx.fillStyle = color;
+            ctx.font = '14px Arial';
+            ctx.fillText(`${unit}`, 0, 0);
+            ctx.restore();
+        }
+
+        // 绘制X轴时间刻度
+        function drawXAxis() {
+            const graphWidth = canvas.width - config.padding.left - config.padding.right;
+            ctx.fillStyle = config.colors.axis;
+            ctx.font = '12px Arial';
+            ctx.textAlign = 'center';
+            
+            // 时间刻度（示例）
+            const timeLabels = ['-2.5s', '-2.0s', '-1.5s', '-1.0s', '-0.5s', 'Now'];
+            timeLabels.forEach((label, i) => {
+                const x = config.padding.left + (i / (timeLabels.length - 1)) * graphWidth;
+                ctx.fillText(label, x, canvas.height - config.padding.bottom + 20);
+            });
+        }
+
+        // 数据获取（模拟）
+        async function fetchData() {
+            const now = Date.now();
+            return {
+                voltage: 10 + Math.sin(now/800)*8 + Math.random()*2,
+                current: 2.5 + Math.cos(now/600)*2 + Math.random()*0.8
+            };
+        }
+
+        // 更新数据缓冲区
+        async function updateData() {
+            if (!isRefreshing) return;
+            
+            try {
+                const { voltage, current } = await fetchData();
+                voltageData.push(voltage);
+                voltageData.shift();
+                currentData.push(current);
+                currentData.shift();
+            } catch (err) {
+                console.error('数据获取失败:', err);
+            }
+        }
+
+        // 主绘图函数
+        function drawWaveform() {
+            drawStaticElements();
+            
+            // 绘制双通道波形
+            drawChannel(voltageData, config.voltageRange, config.colors.voltage);
+            drawChannel(currentData, config.currentRange, config.colors.current, true);
+            
+            // 实时数值显示
+            ctx.fillStyle = config.colors.voltage;
+            ctx.fillText(`当前电压: ${voltageData[voltageData.length-1].toFixed(2)}V`, 
+                config.padding.left + 10, 30);
+            
+            ctx.fillStyle = config.colors.current;
+            ctx.fillText(`当前电流: ${currentData[currentData.length-1].toFixed(2)}A`, 
+                canvas.width - config.padding.right - 150, 30);
+
+            requestAnimationFrame(drawWaveform);
+        }
+
+        // 绘制单通道波形
+        function drawChannel(data, range, color, isRightAxis = false) {
+            const graphWidth = canvas.width - config.padding.left - config.padding.right;
+            const graphHeight = canvas.height - config.padding.top - config.padding.bottom;
+            
+            // 生成坐标点
+            const points = data.map((value, i) => ({
+                x: isRightAxis ? 
+                    i * (graphWidth / (data.length - 1)) :
+                    config.padding.left + i * (graphWidth / (data.length - 1)),
+                y: canvas.height - config.padding.bottom - 
+                   ((value - range[0]) / (range[1] - range[0])) * graphHeight
+            }));
+
+            // 平滑曲线绘制
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            
+            ctx.moveTo(points[0].x, points[0].y);
+            for (let i = 1; i < points.length; i++) {
+                const p0 = points[Math.max(0, i-1)];
+                const p1 = points[i];
+                const cp = {
+                    x: p0.x + (p1.x - p0.x) * smoothing,
+                    y: p0.y + (p1.y - p0.y) * smoothing
+                };
+                ctx.quadraticCurveTo(cp.x, cp.y, p1.x, p1.y);
+            }
+            
+            ctx.stroke();
+        }
+
+        // 控制逻辑
+        let refreshInterval = 500;
+        let intervalId;
+
+        function startRefresh() {
+            intervalId = setInterval(updateData, refreshInterval);
+        }
+
+        function toggleRefresh() {
+            isRefreshing = !isRefreshing;
+            document.getElementById('toggleBtn').textContent = 
+                isRefreshing ? '暂停刷新' : '继续刷新';
+        }
+
+        function changeInterval() {
+            refreshInterval = parseInt(document.getElementById('interval').value);
+            clearInterval(intervalId);
+            startRefresh();
+        }
+
+        function updateSmoothness(value) {
+            smoothing = parseFloat(value);
+            document.getElementById('smoothnessValue').textContent = value;
+        }
+
+        // 启动系统
+        init();
+    </script>
+</body>
+</html>

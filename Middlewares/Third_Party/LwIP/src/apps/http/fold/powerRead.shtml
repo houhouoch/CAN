@@ -1,0 +1,23 @@
+<table hidden>
+	<tr>
+		<th rowspan="1"><label id="curVol_disp"><!--#curVol-->V</label></th>
+		<th rowspan="1"><label id="curCur_disp"><!--#curCur-->A</label></th>
+		<th rowspan="1"><label id="curWat_disp"><!--#curWat-->W</label></th>
+		<th rowspan="1"><label id="curState_disp"><!--#curState--></label></th>
+	</tr>
+
+	<tr>
+		<th rowspan="1"><label id="setVol_disp"><!--#setVol--></label></th>
+		<th rowspan="1"><label id="setCur_disp"><!--#setCur--></label></th>
+		<th rowspan="1"><label id="setOnoff_disp"><!--#setOnoff--></label></th>
+
+		<th rowspan="1"><label id="setOVP_disp"><!--#setOVP--></label></th>
+		<th rowspan="1"><label id="setOVP_on_disp"><!--#setOVP_on--></label></th>
+		<th rowspan="1"><label id="setOCP_disp"><!--#setOCP--></label></th>
+		<th rowspan="1"><label id="setOCP_on_disp"><!--#setOCP_on--></label></th>
+
+		<th rowspan="1"><label id="maxVol_disp"><!--#maxVol--></label></th>
+		<th rowspan="1"><label id="maxCur_disp"><!--#maxCur--></label></th>
+		<th rowspan="1"><label id="maxWat_disp"><!--#maxWat--></label></th>
+	</tr>
+</table>
